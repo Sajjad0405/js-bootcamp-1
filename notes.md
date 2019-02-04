@@ -51,5 +51,12 @@ console.log(false ? 1 : 2);
 // > 2
 ```
 
+De Ternary operator checkt of de waarde voor het vraagteken waar is. Zo ja, dan print geeft hij het eerste getal terug, zo nee, dan geeft hij het getal na de dubbele punt terug.
+
 Qua prioriteit zit het zo: De laagste prio gaat uit naar de `||`, vervolgens komt de `&&` en daarna komen alle andere operators (`>, <, >=, ===` etc.).
+
+## Empty values
+Er zijn twee soorten lege waardes, namelijk `null` en `undefined`, deze worden gegeven als er geen waarde is (in bijv. een variabele) om terug te geven. Je hebt natuurlijk `NaN`, echter, dat is geen lege waarde, het geeft wel een waarde alleen is het geen wiskundig iets of een complete string o.i.d. Wanneer er eenmaal `NaN` uit een berekening voortkomt blijft hij bij elke opvolgende berekening `NaN` aangeven.
+
+Als dat het geval is, is het verstandig om te zoeken naar een typfout.
 
