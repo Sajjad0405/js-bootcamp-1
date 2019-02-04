@@ -1,4 +1,4 @@
-#Introduction
+# Introduction
 Een goede programmeertaal helpt de programmeur door hen 'toe te staan' vrijwel te praten over de acties die de computer moet doen op een 'hoger' niveau. Het zorgt ervoor dat je niet hele specifieke details hoeft aan te geven, je building blocks kan gebruiken (zoals bijv. een `while loop` en functies als `console.log`), zelf je building blocks kan maken (eigen functies en variabelen) en dat die (zelfgemaakte blokken) goed composable zijn.
 
 JavaScript heeft niets te maken met de andere programmeertaal Java!
@@ -7,7 +7,7 @@ JavaScript is erg vrij in wat het toestaat. Aan de ene kant is dat handig voor b
 
 JavaScript wordt niet alleen in webbrowsers gebruikt. Ook databases zoals MongoDB en CouchDB gebruiken JavaScript als hun scripting en query-taal. O.a. NodeJS maakt het mogelijk voor JavaScript om buiten de browser te draaien.
 
-#Chapter 1: Values, types and operators
+# Chapter 1: Values, types and operators
 De cornerstone van JavaScript programma's zijn de 'simpele' value types en operators. Er zijn verschillende soorten value types, namelijk:
 - Number (numeriek, bijv. 1, 2, 21 etc.)
     - Voor delen van getallen schrijf je het met een punt: `9.5`;
