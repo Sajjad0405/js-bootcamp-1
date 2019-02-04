@@ -20,3 +20,36 @@ De cornerstone van JavaScript programma's zijn de 'simpele' value types en opera
     - Strings staan altijd in quotes: `'Dit is een string'`
     - Je kan single quotes (' '), double quotes (" ") of backticks (``) gebruiken om een string aan te geven
     - Ook heb je speciale characters als Newlines (wanneer je op `ENTER` zou drukken) en Tab characters (wanneer je op `TAB` zou drukken), dit bereik je door een backslash `\` te gebruiken met een flag daarna (`\n` voor een Newline en `\t` voor een Tab)
+- Unary operators (bijv. de uitkomst van `typeof`)
+    - Operators die twee waardes gebruiken noem je binary operators, operators die één waarde gebruikt noem je een unary operator
+- Boolean (`true` of `false`)
+    - Word gebruikt om onderscheid te kunnen maken tussen ja/nee, aan/uit, waar/niet waar
+
+## Vergelijkingen
+Vergelijkingen produceren altijd Boolean values (`true` of `false`). Een aantal operators voor vergelijkingen zijn als volgt:
+- Kleiner dan: `<`
+- Groter dan: `>`
+- Kleiner dan of gelijk aan: `<=`
+- Groter dan of gelijk aan: `>=`
+- Hetzelfde als: `==`
+- Niet hetzelfde als: `!=`
+- Hetzelfde als en hetzelfde datatype (aangeraden): `===`
+- Niet hetzelfde als en niet hetzelfde datatype (aangeraden): `!==`
+
+Er is slechts één waarde binnen JavaScript die niet hetzelfde is als zichzelf, namelijk `NaN`.
+
+## Logical operators 
+Er zijn drie logical operators:
+1. Logical AND: `&&`
+2. Logical OR: `||`
+3. Ternary operator: 
+```javascript
+console.log(true ? 1 : 2);
+// > 1
+
+console.log(false ? 1 : 2);
+// > 2
+```
+
+Qua prioriteit zit het zo: De laagste prio gaat uit naar de `||`, vervolgens komt de `&&` en daarna komen alle andere operators (`>, <, >=, ===` etc.).
+
