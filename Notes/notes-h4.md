@@ -74,3 +74,26 @@ let {age} = person;
 console.log(age);
 // > 22
 ```
+
+## JSON
+Om data om te zetten naar een 'flat' description wordt JSON (JavaScript Object Notation) gebruikt. JSON ziet eruit als een JavaScript object met enkele restricties, namelijk:
+- Alle property namen moeten dubbele quotes om zich hebben: `"json-property"`. JavaScript geeft ons twee methods op een JSON object, namelijk `JSON.stringify` en `JSON.parse`. Wat deze doen zie je onderstaand:
+```javascript
+// data in our case is a fake JSON object
+const data = {
+    "squirrel": false,
+    "events": ["work", "touched tree", "pizza", "running"];
+}
+
+const string = JSON.stringify(
+        {
+            "squirrel": false,
+            "events": ["weekend"],
+        }
+    );
+console.log(string);
+// > {"squirrel":false,"events":[weekend]}
+
+console.log(JSON.parse(string).events);
+// > ["weekend"]
+```
