@@ -55,12 +55,16 @@ Bindings die gecreëerd zijn door `let` of `const` hebben altijd een lokale scop
 // Global scope
 let message = "Hey";
 
-// Local scope (binnen de functie)
+// Function scope (lexical scope)
 function localScope() {
     let otherMessage = "Hoi";
     return otherMessage;
 }
 
+// Block scope
+{
+    // Binnen het block
+}
 console.log(message);
 // > "Hey"
 
@@ -133,20 +137,31 @@ const mySecondFunction = function(x) {
 }
 ```
 
-## Closure and Recursion
-Closure houdt in dat je een specifieke local binding (binnen een functie) toegankelijk maakt voor de buitenliggende scope:
+## Closure and Recursion (and CallStack)
+Een voorbeeld van closure:
 
 ```javascript
-function times(factor) {
-    return number => number * factor;
+console.log(1);
+
+myLittleFunction();
+
+function myLittleFunction() {
+    console.log(2);
+    let alsLaatste = 3;
+    
+    setTimeout(function() {
+        console.log(alsLaatste);
+    }, 1000);
+
+    console.log(4);
 }
+// Expected output:
+// 1
+// 2
+// 4
+// 3
 
-// Hier wordt de 'factor' parameter ingevuld van de times functie
-let timesFive = times(5);
-
-// Hier de 'number' parameter van de return value van de times functie
-console.log(timesFive(2));
-// > 10
+// Hoewel de functie myLittleFunction al van de call stack is verdwenen houdt de setTimeout binnen de functie een referentie naar de variabele 'alsLaatste' (closure). 
 ```
 Recursion houdt in dat een functie zichzelf kan callen. Dit moet je echter niet te vaak doen, dan overflow je de call stack en crasht je browser:
 
