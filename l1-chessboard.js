@@ -21,4 +21,4 @@ function createChessboard(size) {
     console.log(grid);
 }
 
-createChessboard(8);
+createChessboard(20);
