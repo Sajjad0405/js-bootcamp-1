@@ -15,13 +15,70 @@ Een method is niets meer dan een property van een object die de waarde van `func
 ```javascript
 let rabbit = {};
 
+rabbit.speak = function(line) {
+    console.log(`The ${this.type} rabbit says: ${line}`);
+}
+
+let whiteRabbit = {type: "white", speak};
+let hungryRabbit = {type: "hungry", speak};
+
+whiteRabbit.speak("Oh my lord, the air is very thin today");
+// > "The white rabbit says: Oh my lord, the air is very thin today"
 ```
 
-## Prototypes
+Omdat `this` zich soms apart kan gedragen (past zich aan naar de context waarin deze aangeroepen wordt) kan je ook een functie z'n `call` method gebruiken waarbij je de waarde voor `this` als eerste parameter invult en de parameters voor de functie als tweede, derde etc.:
 
+```javascript
+speak.call(hungryRabbit, "Burp");
+// > "The hungry rabbit says: Burp"
+```
+## Prototypes
+Naast dat elk object z'n eigen set van properties heeft, hebben de meeste objecten ook een `prototype`. Een *prototype* is een ander object dat gebruikt word als fallback voor properties. Wanneer je een property van een object aanvraagt die hij niet heeft, wordt er in z'n prototype gekeken naar de property, daarna naar de prototype z'n prototype etc.
+
+Om een object te maken met een specifiek prototype kan je `Object.create` gebruiken:
+
+```javascript
+let protoRabbit = {
+    speak(line) {
+        console.log(`The ${this.type} rabbit says ${line}`)
+    }
+};
+
+let killerRabbit = Object.create(protoRabbit);
+killerRabbit.type = "killer";
+killerRabbit.speak("SKREEEEE");
+// > "The killer rabbit says SKREEEE"
+```
 
 ## Classes
+Je kan een class zien als een wat verkapte versie van een OOP concept '*classes*'. Een class bepaald de vorm van een bepaald soort object (welke methods en properties het heeft). Zo'n object dat daaruit voort komt noem je een *instance* van de class. Prototypes zijn handig voor het definiëren van properties die elke instance heeft, zoals de method `speak()` in het eerdere voorbeeld. Properties die per instance verschillend zijn dien je in het de instance zelf te binden.
 
+### A constructor function
+Om dus een instance te maken van een bepaalde class moet je een object maken dat verschilt van het prototype maar je moet er ook voor zorgen dat dat object de properties heeft die de instances van die specifieke class zouden moeten hebben. Dit is wanneer een constructor functie handig is:
+
+```javascript
+function makeRabbit(type) {
+    let rabbit = Object.create(protoRabbit);
+    rabbit.type = type;
+    return rabbit;
+}
+```
+
+JavaScript heeft een manier om zo'n functie eenvoudiger te definiëren, namelijk door het keyword `new` voor de function call te gebruiken, dit zorgt ervoor dat de juiste instance gemaakt wordt, gebonden wordt aan this in de functie en returned wordt aan 't einde van de functie:
+
+```javascript
+// In de naam van een prototype is een eerste letter altijd een hoofdletter 
+function Rabbit(type) {
+    this.type = type;
+}
+
+Rabbit.prototype.speak = function(line) {
+    console.log(`The ${this.type} rabbit says ${line}`);
+}
+
+// Een nieuwe instance van Rabbit wordt gemaakt:
+let otherRabbit = new Rabbit("weird");
+```
 
 ## Class notation
 
