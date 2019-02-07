@@ -57,6 +57,18 @@ let person = {
 }
 ```
 
+## Mutability
+Properties van een object kan je niet aanpassen, wel overschrijven!
+
+```javascript
+const person = {
+    name: "Kris",
+    age: 22
+}
+```
+
+Je kan niet nu in het object person gaan en de property name aanpassen, je kan wel opnieuw de VALUE van name definiëren.
+
 ### Getting data out of objects
 Normaliter haal je data uit objecten doormiddel van dot notation:
 

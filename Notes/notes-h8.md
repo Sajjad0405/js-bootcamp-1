@@ -52,18 +52,41 @@ let ferdinand = Person("Ferdinand"); // new vergeten...
 Er wordt je zo dus direct verteld dat je iets fout doet, dat is enorm handig.
 
 ## Types
-Sommige programmeertalen willen alle types van alle bindings en expressions weten voordat ze überhaupt beginnen met het runnen van je programma. Ze vertellen je direct wanneer een type inconsistent wordt gebruikt. 
+Sommige programmeertalen willen alle types van alle bindings en expressions weten voordat ze überhaupt beginnen met het runnen van je programma. Ze vertellen je direct wanneer een type inconsistent wordt gebruikt. JavaScript houdt hier pas rekening mee on runtime, en zelfs dan probeert het nog kaas te maken van je fouten... niet bepaald een ideale situatie dus.
+
+Veel van de fouten die worden gemaakt komen door verwarring die ontstaat over watvoor waarde er in of uit functies komen (bijv. moet er een array in of een object etc.). Om te voorkomen dat je verward raakt kan je zulke comments boven de functie neerzetten:
+
+```javascript
+// (VillageState, Array) > {direction: string, memory: array})
+function goalOrientedRobot() {
+    // code
+}
+```
 
 ## Testing
+Als een taal ons niet gaat helpen met het vinden van fouten zullen we ze op de lastige manier moeten vinden: door het te runnen en te kijken of ons programma het juiste ding doet. Dat telkens doen is een slecht idee, niet alleen is het irritant, het kost ook nog eens veel meer tijd. Je kan er ook voor kiezen om een eigen test te schrijven:
 
+Beter is om gebruik te maken van zogenaamde *test runners*: Programma's, gebouwd uit functies en methods, waarmee je je code kan testen en die nuttige informatie geven als een test faalt.
 
 ## Debugging
+Zodra je merkt dat er iets mis is met je code is de volgende stap om uit te zoeken *wat* er dan mis is met je code. Soms is het logisch en staat er precies in de console waar de fout voorkomt. Echter, het kan ook voorkomen dat de lijn die de fout triggert simpelweg de eerste lijn is waar een waarde die ergens anders is gedefinieerd op een verkeerde manier gebruikt wordt.
 
+### Programma analyseren
+Als je programma niet de juiste output geeft en je niet direct ziet waar de fout vandaan komt, neem dan een stap terug in plaats van direct aanpassingen te doen om te kijken of het beter wordt. Beter is om te analyseren wat er precies gebeurt en kom met een theorie waarom het fout zou kunnen zijn gegaan.
 
-## Error propagation
+### `Console.log()`
+Door strategisch wat `console.log`'s neer te zetten in je code kan je erachter komen hoe het programma zich gedraagt. Als er bijvoorbeeld iets fout gaat in een loop met misschien de waarde van `i` zou je die elke keer kunnen console loggen.
 
+### Browser debugger
+Een alternatief voor `console.log` is gebruik te maken van de debugger in je browser. De debugger heeft een handige feature, namelijk het neerzetten van breakpoints. Wanneer je ergens een breakpoint neer zet stopt het script met draaien op dat moment en kan je de waarden van bindings inspecteren. 
 
-## Exceptions
+### Debugger statement
+Je kan ook nog een `debugger` statement in je code neerzetten. Als je dat doet en de debugger van de browser is actief, dan stopt het script met draaien op het punt dat het `debugger` tegenkomt.
+
+## Error handling
+Wat gebeurt er als niet de programmeur een fout heeft gemaakt, maar de gebruiker een 'fout' maakt door niet de juiste input in te vullen? Dat is waar we het nu over gaan hebben. In alle gevallen dat je iets maakt waar meerdere mensen gebruik van gaan maken wil je hebben dat het programma reageert op een foute input. Dit kan zijn door het te negeren en door te gaan met draaien of door de gebruiker te laten weten dat er iets is fout gegaan.
+
+## Exception handling
 
 
 ## Cleaning up after exceptions
