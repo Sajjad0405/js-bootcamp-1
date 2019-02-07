@@ -81,27 +81,216 @@ let otherRabbit = new Rabbit("weird");
 ```
 
 ## Class notation
+JavaScript classes zijn dus constructor functies met een prototype property... Tegenwoordig is er echter een eenvoudigere manier om zo'n constructor functie te schrijven, namelijk met de keyword `class`:
 
+```javascript
+class Rabbit {
+    constructor(type) {
+        this.type = type;
+    }
+    speak(line) {
+        console.log(`The ${this.type} rabbit says ${line}`);
+    }
+}
+
+let killerRabbit = new Rabbit("killer");
+let blackRabbit = new Rabbit("black");
+```
+Een `class` declaratie maakt het momenteel alleen mogelijk om methods te definiëren binnen het prototype!
 
 ## Overriding derived properties
+Als je een property toevoegt aan een object, of het nou al in het prototype stond of niet, dan nog wordt de property toegevoegd aan het object *zelf*. Als er al een property was met dezelfde naam binnen het prototype heeft dat geen invloed op het object aangezien die nu achter de property van het object zelf schuilt.
 
+```javascript
+Rabbit.prototype.teeth = "small";
+
+console.log(killerRabbit.teeth);
+// > small
+
+killerRabbit.teeth = "long, sharp, and bloody";
+
+console.log(killerRabbit.teeth);
+// > long, sharp, and bloody
+
+console.log(blackRabbit.teeth);
+// > small
+
+console.log(Rabbit.prototype.teeth);
+// > small
+```
+
+Het voordeel van het overschrijven van bestaande properties is dat je een specifiekere instances hun eigen properties kan geven zonder daarbij het origineel (de class en generieke instances) aanpast.
 
 ## Maps
+Een `map` is een data structure die values (keys) met andere values associeert. Zo kan je bijvoorbeeld namen willen 'mappen' aan een leeftijd. Je zou hiervoor een plain object kunnen gebruiken (zie onderstaand). Echter, dat is erg gevaarlijk omdat objecten voortkomen uit `Object.prototype`. Hierdoor is het in het voorbeeld zo dat de leeftijd van `toString` bekend is terwijl we deze niet gedefinieerd hebben.
 
+```javascript
+// Het mappen van leeftijden aan een naam (als object)
+let ages = {
+    Boris: 39,
+    Liang: 22,
+    Júlia: 62
+}
 
+console.log(`Júlia is ${ages["Júlia"]}`);
+// > Júlia is 62
+
+console.log("Is Jack's age known?", "Jack" in ages);
+// > false (Jack staat niet in het object ages)
+
+console.log("Is toString's age known?", "toString" in ages);
+// > true (maar toString staat niet in het object ages... WTF)
+```
+Gelukkig heeft JavaScript een veilige manier om zoiets te bereiken (bijv het mappen van leeftijden aan specifieke namen):
+
+```javascript
+let ages = new Map();
+// Zet de nieuwe waarden van ages erin als volgt:
+ages.set("Boris", 39);
+ages.set("Liang", 22);
+ages.set("Júlia", 62);
+
+// Haal de waarde van Júlia uit het ages object
+console.log(`Júlia is ${ages.get("Júlia")}`);
+// > 62
+```
 ## Polymorphism
+```javascript
+Rabbit.prototype.toString = function() { 
+    return `a ${this.type} rabbit.`;
+}
 
+console.log(String(blackRabbit));
+// > "a black rabbit."
+```
+
+Bovenstaand is een simpele uitvoering van een krachtig idee. Wanneer een stuk code is geschreven om met objecten te werken die een bepaalde interface hebben (in dit geval een `toString` method) kan elk soort object die toevallig de interface (`toString` method) ondersteunt kan in de code gepleurd worden. De code zal dan alsnog blijven werken. Deze techniek noem je *polymorphism*.
 
 ## Symbols
+Symbols zijn waardes die gecreëerd zijn met de `Symbol` functie. In tegenstelling tot strings zijn nieuwe symbols altijd uniek, je kan nooit twee dezelfde symbols creëren. Dit maakt het mogelijk om twee keer dezelfde property naam te gebruiken binnen een interface.
 
+```javascript
+let sym = Symbol("name");
+console.log(sym == Symbol("name"));
+// > false
+
+Rabbit.prototype[sym] = 55;
+console.log(blackRabbit[sym]);
+// > 55
+```
 
 ## The iterator interface
+Het wordt van een object dat je passed aan een `for/of` loop verwacht dat het 'itereerbaar' is (dat je er doorheen kan loopen). Dit betekent dat het over een method genaamd `Symbol.iterator` beschikt. Wanneer `Symbol.iterator` aangeroepen wordt returnt deze een object die de tweede interface aanbiedt: *iterator*. Dat is het ding dat itereert. Het heeft een `next` method die het volgende resultaat toont als er één is, die geeft op zijn beurt een object met een `value` property die de waarde toont als er iets te tonen valt en een `done` property dat true geeft wanneer er nog iets te itereren valt en false als dat niet het geval is.
 
+```javascript
+let okIterator = "OK"[Symbol.iterator]();
+
+console.log(okIterator.next());
+// > {value: "O", done: false}
+
+console.log(okIterator.next());
+// > {value: "K", done: false}
+
+console.log(okIterator.next());
+// > {value: undefined, done: true}
+```
 
 ## Getters, setters and statics
+Interfaces bestaan meestal uit methods, echter, het is helemaal prima om properties toe te voegen die geen functie als binding hebben. Het is nieteens nodig voor zo'n object om de betreffende property in de instance op te slaan. Zelfs properties die direct uit een object worden 'opgevraagd' kunnen een method call in zich verbergen. Zulke methods noem je *getter*. Je declareert ze door *get* voor de method name neer te zetten binnen een object expression of class declaration:
 
+```javascript
+let varyingSize = {
+    get size() {
+        return Math.floor(Math.random() * 100);
+    }
+};
+
+console.log(varyingSize.size);
+// > 73
+```
+
+Je kan ook, in plaats van waarden opvragen, waarden aanpassen. Dan heet de method een *setter*, deze definieer je door *set* voor de method name neer te zetten:
+
+```javascript
+class Temperature {
+    constructor(celsius) {
+        this.celsius = celsius;
+    }
+
+    get fahrenheit() {
+        return this.celsius * 1.8 + 32;
+    }
+
+    set fahrenheit(value) {
+        // Pas de waarde van celsius binnen de constructor van Temperature aan
+        this.celsius = (value - 32) / 1.8;
+    }
+
+    static fromFahrenheit(value) {
+        return new Temperature((value - 32) / 1.8);
+    }
+}
+
+let temp = new Temperature(22);
+console.log(temp.fahrenheit);
+// > 71.6
+
+temp.fahrenheit = 86;
+console.log(temp.celsius);
+// > 30
+```
+
+Soms wil je de mogelijkheid hebben om properties direct aan je constructor functie koppelen in plaats van aan het prototype. Zulke methods hebben geen toegang tot een instance van de class maar kunnen bijvoorbeeld wel extra manieren mogelijk maken om een instance te creëren. Datsoort methods creëer je door er `static` voor te zetten (zoals fromFahrenheit in het bovenstaande voorbeeld). 
+
+Dit maakt het nu mogelijk om `Temperature.fromFahrenheit(100)` te schrijven om zo een temperatuur te creëren vanaf graden Fahrenheit.
 
 ## Inheretance
+JavaScript maakt het mogelijk om een nieuwe class te maken die heel erg veel op de oude class lijkt maar met nieuwe bindings voor sommige properties of zelfs met compleet nieuwe properties. In OOP noem je dat *inheretance*. Als je een kind (*subclass*) nodig hebt dat veel op de vader lijkt (*superclass*) dan kan je het beste de vader 'verlengen' door *extends* te gebruiken om zo het kopiëren van code te voorkomen:
 
+```javascript
+// Super class
+class Vader {
+    constructor(leeftijd, lengte) {
+        this.leeftijd = leeftijd;
+        this.lengte = lengte;
+        this.name = "Papa";
+    }
+
+    get leeftijd() {
+        return this.leeftijd;
+    }
+
+    set nieuweLeeftijd(nieuweLeeftijd) {
+        this.leeftijd = leeftijd;
+    }
+}
+
+// Sub class
+class Kind extends Vader {
+    constructor(isPuber) {
+        // Hierdoor wordt de constructor van de parent aangeroepen
+        super(leeftijd, lengte, isPuber);
+        this.isPuber = true;
+        this.name = "Kind";
+    }
+}
+
+// ???????? Hoe werkt dit nou precies?
+```
 
 ## The `instanceof` operator
+Het kan handig zijn om te weten of een bepaald object afkomstig is vanuit een bepaalde class. Hier heeft JavaScript de `instanceof` operator voor:
+
+```javascript
+console.log(new Kind(12, 1.75) instanceof Kind);
+// > true
+
+console.log(new Kind(12, 1.75) instanceof Vader);
+// > true
+
+console.log(new Vader(44, 1.90) instanceof Kind);
+// > false
+
+console.log([1, 2] instanceof Array);
+// > true
+```
