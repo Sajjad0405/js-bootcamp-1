@@ -86,8 +86,36 @@ Je kan ook nog een `debugger` statement in je code neerzetten. Als je dat doet e
 ## Error handling
 Wat gebeurt er als niet de programmeur een fout heeft gemaakt, maar de gebruiker een 'fout' maakt door niet de juiste input in te vullen? Dat is waar we het nu over gaan hebben. In alle gevallen dat je iets maakt waar meerdere mensen gebruik van gaan maken wil je hebben dat het programma reageert op een foute input. Dit kan zijn door het te negeren en door te gaan met draaien of door de gebruiker te laten weten dat er iets is fout gegaan.
 
-## Exception handling
+Stel dat je een functie hebt `promptInteger` die de gebruiker vraagt om een heel getal in te voeren en die returnt. Echter, wat moet het returnen als de gebruiker een string invoert? Dan kan je gebruik maken van een if/else statement om de 'foute' input te ondervangen:
 
+```javascript
+function promptNumber(question) {
+    const result = Number(prompt(question));
+    // als de input geen nummer is, return dan iets anders
+    if (Number.isNaN(result)) return 'Je moet een nummer invullen';
+    // anders, return het resultaat
+    else return result;
+}
+```
+
+De bovenstaande manier heeft echter ook z'n minpunten. Stel dat je functie elk soort input kan nemen als argument. Dan kan je nergens zo expliciet checken of die input goed of fout is... In zo'n geval moet je het resultaat in een object gooien om goed van fout te kunnen onderscheiden:
+
+```javascript
+function lastElement(array) {
+    if (array.length == 0) {
+        return { failed: true };
+    } else {
+        return { element: array[array.length - 1] };
+    }
+}
+```
+
+Daarnaast kan het leiden tot aparte code. Als een stukje code 10 keer runt moet er dus 10 keer gecheckt worden of de functie `null` returnt. Als het antwoord van de functie op een `null` input om simpelweg `null` te returnen moeten callers van de functie ook weer checken etc.
+
+## Exception handling
+When a function cannot proceed normally, what we would like to do is just stop what we are doing and immediately jump to a place that knows how to handle the problem. This is what exception handling does.
+
+Wanneer een functie niet op de normale manier door kan gaan 
 
 ## Cleaning up after exceptions
 
