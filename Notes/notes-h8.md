@@ -112,36 +112,58 @@ function lastElement(array) {
 
 Daarnaast kan het leiden tot aparte code. Als een stukje code 10 keer runt moet er dus 10 keer gecheckt worden of de functie `null` returnt. Als het antwoord van de functie op een `null` input om simpelweg `null` te returnen moeten callers van de functie ook weer checken etc.
 
-## Exception handling
-Wanneer een functie niet op de normale manier door kan gaan zouden we normaliter willen dat het direct stopt met wat het doet en naar een plek 'springt' dat weet hoe je om moet gaan met het probleem. Dit is precies wat *exception handling* doet.
+Wanneer een functie niet op de normale manier door kan gaan zouden we normaliter willen dat het direct stopt met wat het doet en naar een plek 'springt' dat weet hoe je om moet gaan met het probleem zonder dat dit de rest van het programma (na de error) naar de klote helpt. Dit is precies wat *exception handling* doet.
 
-Een *exception* aanroepen doe je door `trow` te gebruiken. Na de `throw` staat een expressie die het programma moet uiten wanneer er een fout wordt gemaakt. `try` probeert een exception uit op de code die in het blok staat. Vervolgens gebruik je `catch` om in het geval van een error de expressie van `throw` te uiten. Zodra je een exception hebt 'gevangen' kan je iets doen om het probleem aan te kaarten en vervolgens verder gaan met het draaien van het script.
+Error handling gebruik je vaak wanneer je werkt met input van gebruikers of met input vanuit externe bronnen. Tijdens error handling heb je vier verschillende keywords die je gebruikt:
+1. `try`
+2. `catch`
+3. `finally`
+4. `throw`
 
-Wanneer je `throw` aanroept wordt de hele stack *unwound* (wat is het) tot aan het volgende try/catch block. Wanneer die er niet is stopt je programma met draaien. Echter, je kan ook een `finally` block definiëren die altijd draait ongeacht de uitkomst van je try/catch block.
+Het `try` statement laat je een stuk code testen op errors. Het `catch` statement laat je wat doen met een error (als) die naar boven komt in de code binnen het `try` block. Als er ergens binnen het `try` block een error voorkomt dan springt het gelijk naar je `catch` blok zonder dat het de rest van de code onder de fout uitvoert. Het `throw` statement laat je zelf error statements creëren, dit is vooral handig wanneer een functie bijvoorbeeld specifieke parameter types moet hebben (bijv. number). Code binnen een `finally` statement zal altijd draaien ongeacht het resultaat van je `try/catch` block.
 
 ```js
-// Original code is from MDN
-function calcArea(width, height) {
-  if (isNaN(width) || isNaN(height)) {
-    throw "The parameter is not a number";
-  }
+console.log("Programma begint met draaien");
+
+try {
+    console.log("Start try runs");
+    // > Start try
+
+    unknownVar;
+    // Dit geeft je direct een error, deze variabele bestaat namelijk niet in het programma.
+
+    console.log("Einde try runs -- dit stukje wordt nooit bereikt");
+} catch(error) {
+    console.log(`Error has occured: ${error.stack}`);
+    // Geef dit aan op de console. De .stack zorgt ervoor dat de console ook laat zien op welke lijn de fout zit, niet alle
+    // browsers ondersteunen dat. Een andere optie zou zijn:
+
+    console.log(`Error has occured: ${error}`);
+} finally {
+    console.log("Ik draai altijd");
+    // Dit draait ongeacht de uitkomst van try/catch
 }
 
-// Probeer dit 
+console.log("Programma gaat verder met draaien")
+```
+
+`throw` kan je gebruiken om je eigen errors aan te geven i.p.v. de standaard `Reference Error` etc. van de browser:
+
+```js
+function logArray(arr) {
+    if (arr.length === 0) {
+        throw new Error("please enter an array as argument to this function.");
+    }
+    console.log(arr);
+}
+
 try {
-  getRectArea(3, 'A');
+    printArray('hello');
 } catch(error) {
-    console.log(error);
-    // > "Parameter is not a number!"
+    console.log(`Argument error: ${error}`);
+    // There's an error: please enter an array as argument to this function.
 }
 ```
 
-
-
-## Cleaning up after exceptions
-
-
-## Selective catching
-
-
 ## Assertions
+De bovenstaande code noem je ook wel een `assertion`. In plaats van stilletjes `undefined` terug te geven geeft de bovenstaande functie een keiharde `console.log` als de arguments van de functie niet juist zijn. Assertions wil je idealiter niet altijd gebruiken bij elke input die fout zou kunnen zijn. Beter is om ze te gebruiken bij fouten die eenvoudig te maken zijn of fouten die je zelf vaak maakt.
