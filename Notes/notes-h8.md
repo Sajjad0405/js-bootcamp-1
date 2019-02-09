@@ -113,9 +113,30 @@ function lastElement(array) {
 Daarnaast kan het leiden tot aparte code. Als een stukje code 10 keer runt moet er dus 10 keer gecheckt worden of de functie `null` returnt. Als het antwoord van de functie op een `null` input om simpelweg `null` te returnen moeten callers van de functie ook weer checken etc.
 
 ## Exception handling
-When a function cannot proceed normally, what we would like to do is just stop what we are doing and immediately jump to a place that knows how to handle the problem. This is what exception handling does.
+Wanneer een functie niet op de normale manier door kan gaan zouden we normaliter willen dat het direct stopt met wat het doet en naar een plek 'springt' dat weet hoe je om moet gaan met het probleem. Dit is precies wat *exception handling* doet.
 
-Wanneer een functie niet op de normale manier door kan gaan 
+Een *exception* aanroepen doe je door `trow` te gebruiken. Na de `throw` staat een expressie die het programma moet uiten wanneer er een fout wordt gemaakt. `try` probeert een exception uit op de code die in het blok staat. Vervolgens gebruik je `catch` om in het geval van een error de expressie van `throw` te uiten. Zodra je een exception hebt 'gevangen' kan je iets doen om het probleem aan te kaarten en vervolgens verder gaan met het draaien van het script.
+
+Wanneer je `throw` aanroept wordt de hele stack *unwound* (wat is het) tot aan het volgende try/catch block. Wanneer die er niet is stopt je programma met draaien. Echter, je kan ook een `finally` block definiëren die altijd draait ongeacht de uitkomst van je try/catch block.
+
+```js
+// Original code is from MDN
+function calcArea(width, height) {
+  if (isNaN(width) || isNaN(height)) {
+    throw "The parameter is not a number";
+  }
+}
+
+// Probeer dit 
+try {
+  getRectArea(3, 'A');
+} catch(error) {
+    console.log(error);
+    // > "Parameter is not a number!"
+}
+```
+
+
 
 ## Cleaning up after exceptions
 
