@@ -168,9 +168,3 @@ console.log(Math.round(average(
 ));
 // > getal
 ```
-
-## Strings and character codes
-??
-
-## Recognizing text
-??
